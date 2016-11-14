@@ -1,8 +1,8 @@
-import {Directive, HostListener} from "@angular/core";
-import {NotificationService} from "./notification.service";
 /**
  * Created by loi on 11/10/16.
  */
+import {Directive, HostListener} from "@angular/core";
+import {NotificationService} from "../share/notification.service";
 
 @Directive({ selector: '[dialogAnchor]'
 })

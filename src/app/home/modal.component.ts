@@ -1,5 +1,5 @@
 import {Component, style, animate, transition, trigger} from "@angular/core";
-import {NotificationService} from "./notification.service";
+import {NotificationService} from "../share/notification.service";
 /**
  * Created by loi on 11/11/16.
  */
@@ -24,18 +24,21 @@ export class ModalComponent {
   public visible = false;
   private visibleAnimate = false;
   private count : number = 1;
+  public callbackResult : (boolean) => void;
 
-  constructor(private notificationService : NotificationService) {}
+  constructor(private notificationService : NotificationService) {
+//      this.notificationService.callbackOpen = this.showWithThis(this);
+  }
 
-  public show(): void {
-    this.count++;
-    this.notificationService.message = "New Message " + this.count;
-    this.visible = true;
-    setTimeout(() => this.visibleAnimate = true);
+  public show(outerThis : ModalComponent): void {
+    outerThis.count++;
+    outerThis.visible = true;
+    setTimeout(() => outerThis.visibleAnimate = true);
   }
 
   public hide(): void {
     this.visibleAnimate = false;
     setTimeout(() => this.visible = false, 300);
+    this.callbackResult(true);
   }
 }

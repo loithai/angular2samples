@@ -3,7 +3,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        {{notificationService.title}}
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="hide()">&times;</button>
+        <h4 class="modal-title">{{notificationService.title}}</h4>
       </div>
       <div class="modal-body">
         {{notificationService.message}}
@@ -16,3 +17,4 @@
   </div>
 </div>
 <div *ngIf="visible" class="overlay" (click)="close()"></div>
+

@@ -4,8 +4,9 @@ import { AppState } from '../app.service';
 import { Title } from './title';
 
 import { XLarge } from './x-large';
-import {NotificationService} from "./notification.service";
-import {ModalComponent} from "./modal.component";
+import {NotificationService} from "../share/notification.service";
+import {WarningComponent} from "../share/warning/warning.component";
+import {ConfirmationComponent} from "../share/confirmation/confirmation.component";
 
 @Component({
   // The selector is what angular internally uses
@@ -22,16 +23,17 @@ import {ModalComponent} from "./modal.component";
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  @ViewChild(ModalComponent) modal : ModalComponent;
+  @ViewChild(WarningComponent) warningComponent : WarningComponent;
+  @ViewChild(ConfirmationComponent) confirmation : ConfirmationComponent;
   // Set our default values
   localState = { value: '' };
   // TypeScript public modifiers
   constructor(public appState: AppState, public title: Title, private notificationService : NotificationService) {
-
   }
 
   ngOnInit() {
     console.log('hello `Home` component');
+    this.notificationService.callbackOpen = this.confirmation.show;
     // this.title.getData().subscribe(data => this.data = data);
   }
 
@@ -42,14 +44,20 @@ export class HomeComponent {
   }
 
   openDialogBox() {
-    this.notificationService.title = "Dialog 1";
-    this.modal.show();
-    // TODO: Open up a dialog box
+    this.confirmation.callbackResult = this.confirm1Result;
+    this.notificationService.showConfirmation(this.confirmation, "Confirmation", "Are you sure?", this);
+  }
+
+  public confirm1Result(result : boolean): void {
+    alert(result);
+  }
+
+  public modalResult(): void {
+    alert("Modal Result");
   }
 
   openDialogBox2() {
-    this.notificationService.title = "Dialog 2";
-    this.modal.show();
-    // TODO: Open up a dialog box
+    this.warningComponent.callbackResult = this.modalResult;
+    this.notificationService.showWarning(this.warningComponent, "Warning Dialog", "This is a warning dialog", this);
   }
 }
